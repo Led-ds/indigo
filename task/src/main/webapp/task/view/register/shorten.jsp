@@ -9,8 +9,8 @@
 		</div>			
 		<div class="row">
 			<div class="col-sm-3 form-group">
-				<label for="shortencustomeAlias">Alias</label>
-		   		<input type="text" class="form-control" id="shortencustomeAlias" name="shortencustomeAlias" ng-model="shorten.customeAlias" placeholder="ALIAS" required>
+				<label>Alias</label>
+		   		<input type="text" class="form-control" ng-model="shorten.customeAlias" placeholder="ALIAS">
 			</div>	
 		</div>
 	    
@@ -29,14 +29,14 @@
 					<th></th>
 					<th></th>
 				</tr>
-				<tr ng-repeat="row in shortens">
-					<td>{{$row.url}}</td>
-					<td>{{$row.created}}</td>
-					<td>{{$row.shortUrl}}</td>
-					<td>{{$row.customAlias}}</td>
-					<td><a href="" ng-click="excluir(row.id);">excluir</a></td>
+				<tr ng-repeat-start="row in shortens">
+					<td>{{row.originalUrl}}</td>
+					<td>{{row.created}}</td>
+					<td>{{row.shortUrl}}</td>
+					<td>{{row.customeAlias}}</td>
+					<td><a ng-click="excluir(row.id);">excluir</a></td>
 				</tr>
+				<tr ng-repeat-end></tr>
 			</table>
-		
 	</form>
 </div>

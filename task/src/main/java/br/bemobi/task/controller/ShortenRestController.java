@@ -1,16 +1,19 @@
 package br.bemobi.task.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.bemobi.task.entity.Shorten;
 import br.bemobi.task.service.ShortenService;
@@ -18,46 +21,26 @@ import br.bemobi.task.service.ShortenService;
 @RestController
 @RequestMapping(value = "/rest/shortens")
 public class ShortenRestController {
-
+	
 	@Autowired
 	private ShortenService shortenService;
+	private HashMap<String, Object> map;
 	
-	public void setShortenService(ShortenService prShortenService){
-		this.shortenService = prShortenService;
+	public void setShortenService(ShortenService shortenService){
+		this.shortenService = shortenService;
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity<List<Shorten>> getshortens() {
-		List<Shorten> shortens = new ArrayList<Shorten>();        
-		shortens = shortenService.findAll();
-		if(!shortens.isEmpty()){
-			return new ResponseEntity<List<Shorten>>(shortens, HttpStatus.OK);
-		}		
-		
-		return new ResponseEntity<List<Shorten>>(HttpStatus.NOT_FOUND);		        
-    }
-	
-	@RequestMapping(value = "/{id}", method=RequestMethod.GET)
-    public ResponseEntity<Shorten> getShortenById (@PathVariable("id") Long prId) {
-		Shorten shorten = null;
-    	if(prId > 0){
-    		shorten = shortenService.getById(prId);    	
-            if (shorten != null) {        	
-                return new ResponseEntity<Shorten>(shorten, HttpStatus.OK);
-            }
-    	}
-    	
-        return new ResponseEntity<Shorten>(HttpStatus.NOT_FOUND);
-    }
-	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Shorten> create(@RequestBody Shorten prShorten) {
     	if(prShorten != null){
-    		shortenService.save(prShorten);
-    		Shorten shortenAtual = shortenService.getById(prShorten.getId());    
-        	if(shortenAtual != null){
-        		return new ResponseEntity<Shorten>(shortenAtual, HttpStatus.OK);
-        	}
+    		map = shortenService.save(prShorten);
+    		if(!map.containsKey("ERRO")){
+    			Shorten shortenAtual = shortenService.getById(prShorten.getId());    
+    			if(shortenAtual != null){
+    				return new ResponseEntity<Shorten>(shortenAtual, (MultiValueMap<String, String>) map.values(), HttpStatus.OK);
+    			}    			
+    		}
     	}    	
      
     	return new ResponseEntity<Shorten>(HttpStatus.NOT_FOUND);
@@ -88,5 +71,33 @@ public class ShortenRestController {
     	}  	
     	
     	return new ResponseEntity<Boolean>(Boolean.FALSE, HttpStatus.NOT_FOUND);     
+    }
+    
+    @RequestMapping(method=RequestMethod.GET)
+    public ResponseEntity<List<Shorten>> getShortens() {
+    	ModelAndView mv = new ModelAndView("shorten");
+    	
+    	List<Shorten> shortens = new ArrayList<Shorten>();
+		shortens = shortenService.findAll();
+		if(shortens != null){
+			mv.addObject("shortens", shortens);
+			
+			return new ResponseEntity<List<Shorten>>(shortens, HttpStatus.OK);
+		}		
+		
+		return new ResponseEntity<List<Shorten>>(HttpStatus.NOT_FOUND);		        
+    }
+    
+    @RequestMapping(value = "/{id}", method=RequestMethod.GET)
+    public ResponseEntity<Shorten> getShortenById (@PathVariable("id") Long prId) {
+		Shorten shorten = null;
+    	if(prId > 0){
+    		shorten = shortenService.getById(prId);    	
+            if (shorten != null) {        	
+                return new ResponseEntity<Shorten>(shorten, HttpStatus.OK);
+            }
+    	}
+    	
+        return new ResponseEntity<Shorten>(HttpStatus.NOT_FOUND);
     }
 }

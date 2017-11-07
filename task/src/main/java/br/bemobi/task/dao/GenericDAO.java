@@ -14,5 +14,7 @@ public interface GenericDAO<PK, T> {
 	
 	public void delete(T entity) throws HibernateException;
 	
-	public List<T> findAll() throws HibernateException;	
+	public List<T> findAll() throws HibernateException;
+	
+	public List<T> findAlias(String alias) throws HibernateException;
 }
