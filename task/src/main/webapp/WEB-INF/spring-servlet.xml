@@ -1,63 +1,92 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:mvc="http://www.springframework.org/schema/mvc"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
- 
- 	<!-- annotations de configuracao -->
-    <context:annotation-config />  
-    
-    <!-- scan dos pacotes que tem annotations -->
-    <context:component-scan base-package="br.bemobi.task" />
-    
-    <!-- annotations de transaction-->
-    <tx:annotation-driven transaction-manager="transactionManager" />
-    
-    <!-- annotations para mvc-->
-    <mvc:annotation-driven />
-    
-    <mvc:resources mapping="/**" location="/" />
-    
-    <!-- Bean para retorno de JSON no controller-->
-    <bean name="viewResolverJSON" class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
-    
-    <!-- Bean para transformacao de objeto java para JSON no controller-->
-    <bean name="jsonTemplate" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
-    
-    <!-- Bean para configuracao do data source-->
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/task" />
-        <property name="username" value="root" />
-        <property name="password" value="" />
-    </bean>
-    
-    <!-- Bean para configuracao do sessionFactory-->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="annotatedClasses">
-            <list>
-                <value>br.bemobi.task.entity.Shorten</value>
-            </list>
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-                <prop key="hibernate.current_session_context_class">thread</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-            </props>
-        </property>
-    </bean>
-    
-    <!-- Bean para configuracao de transacoes no Hibernate-->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-	    <property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	
+
+	<!-- annotations de configuracao -->
+	<context:annotation-config />
+
+	<!-- scan dos pacotes que tem annotations -->
+	<context:component-scan base-package="br.bemobi.task" />
+
+	<!-- annotations de transaction -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- annotations para mvc -->
+	<mvc:annotation-driven />
+
+	<mvc:resources mapping="/**" location="/" />
+
+	<!-- Bean para retorno de JSON no controller -->
+	<bean name="viewResolverJSON"
+		class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+
+	<!-- Bean para transformacao de objeto java para JSON no controller -->
+	<bean name="jsonTemplate"
+		class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+
+	<!-- Bean para configuracao do data source -->
+<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" -->
+<!-- 		destroy-method="close"> -->
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+<!-- 		<property name="url" value="jdbc:mysql://localhost:3306/task" /> -->
+<!-- 		<property name="username" value="root" /> -->
+<!-- 		<property name="password" value="" /> -->
+<!-- 	</bean> -->
+
+	<!-- Bean para configuracao do sessionFactory -->
+<!-- 	<bean id="sessionFactory" -->
+<!-- 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> -->
+<!-- 		<property name="dataSource" ref="dataSource" /> -->
+<!-- 		<property name="annotatedClasses"> -->
+<!-- 			<list> -->
+<!-- 				<value>br.bemobi.task.entity.Shorten</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 		<property name="hibernateProperties"> -->
+<!-- 			<props> -->
+<!-- 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
+<!-- 				<prop key="hibernate.current_session_context_class">thread</prop> -->
+<!-- 				<prop key="hibernate.show_sql">true</prop> -->
+<!-- 				<prop key="hibernate.hbm2ddl.auto">update</prop> -->
+<!-- 			</props> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.hsqldb.jdbc.JDBCDriver" />
+		<property name="url" value="jdbc:hsqldb:mem:myDb" />
+		<property name="username" value="sa" />
+		<property name="password" value="sa" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>br.bemobi.task.entity.Shorten</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Bean para configuracao de transacoes no Hibernate -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 </beans>
