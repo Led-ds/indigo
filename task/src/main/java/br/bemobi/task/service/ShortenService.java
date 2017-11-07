@@ -6,7 +6,7 @@ import br.bemobi.task.entity.Shorten;
 
 public interface ShortenService {
 
-	public Shorten save(Shorten prShorten);
+	public String save(Shorten prShorten);
 	
 	public Shorten update(Long id, Shorten prShorten);
 	

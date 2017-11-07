@@ -1,9 +1,13 @@
 package br.bemobi.task.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.gson.Gson;
 
 import br.bemobi.task.dao.ShortenDAO;
 import br.bemobi.task.entity.Shorten;
@@ -19,17 +23,18 @@ public class ShortenServiceImpl implements ShortenService{
 		this.shortenDAO = prShortenDAO;
 	}
 	
-	public Shorten save(Shorten prShorten) {
-		// TODO Auto-generated method stub
-		Shorten newShorten = null;
+	public String save(Shorten prShorten) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
 		try {
 			Long id = shortenDAO.save(prShorten);
-			newShorten = shortenDAO.getById(id);
+			//newShorten = shortenDAO.getById(id);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return newShorten;
+		return map.toString();
 	}
 
 	public Shorten update(Long prId, Shorten prShorten) {

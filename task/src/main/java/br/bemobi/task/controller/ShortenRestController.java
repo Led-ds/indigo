@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+
 import br.bemobi.task.entity.Shorten;
 import br.bemobi.task.service.ShortenService;
 
@@ -51,16 +53,17 @@ public class ShortenRestController {
     }
 	
 	@RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Shorten> create(@RequestBody Shorten prShorten) {
-    	if(prShorten != null){
-    		shortenService.save(prShorten);
+    public String create(@RequestBody Shorten prShorten) {
+		String result = null;
+		
+		if(prShorten != null){
+    		result = shortenService.save(prShorten);
     		Shorten shortenAtual = shortenService.getById(prShorten.getId());    
         	if(shortenAtual != null){
-        		return new ResponseEntity<Shorten>(shortenAtual, HttpStatus.OK);
+        		return new Gson().toJson(result);
         	}
-    	}    	
-     
-    	return new ResponseEntity<Shorten>(HttpStatus.NOT_FOUND);
+    	}     
+    	return new Gson().toJson(result);
     }  
     
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
