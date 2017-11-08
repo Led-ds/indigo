@@ -2,7 +2,6 @@ package br.bemobi.task.service.impl;
 
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -83,8 +82,7 @@ public class ShortenServiceImpl implements ShortenService{
 					jsonObj.put("statistics", message);
 					
 					message.clear();
-					message.put("SUCCESS", jsonObj);
-					
+					message.put("SUCCESS", jsonObj);					
 				}
 			}			
 		} catch (Exception e) {
