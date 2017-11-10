@@ -9,13 +9,14 @@ public interface ShortenService {
 
 	public HashMap<String, Object> save(Shorten prShorten);
 	
-	public Shorten update(Long id, Shorten prShorten);
+	public Shorten update(Long prId, Shorten prShorten);
 	
 	public void delete(Shorten prShorten);
 	
 	public List<Shorten> findAll();
 	
-	public Shorten getById(Long id);
+	public Shorten getById(Long prId);
 	
-	public String convertTo(int prToBeConverted);
+	public Shorten findByShortUrl(String prShortUrl);
+	
 }

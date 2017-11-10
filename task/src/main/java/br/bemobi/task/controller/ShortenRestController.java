@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import br.bemobi.task.entity.Shorten;
 import br.bemobi.task.service.ShortenService;
@@ -33,18 +34,16 @@ public class ShortenRestController {
 	
 	@RequestMapping(method=RequestMethod.POST)
     public String create(@RequestBody Shorten prShorten) {
-		StringBuilder result = new StringBuilder("");
+		Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().setPrettyPrinting().create();
 		if(prShorten != null){
     		map = shortenService.save(prShorten);
-    		if(!map.containsKey("ERRO")){
-    			Shorten shortenAtual = shortenService.getById(prShorten.getId());    
-    			if(shortenAtual != null){
-    				return new Gson().toJson(result);
-    			}    			
-    		}
-    	}    	
-     
-    	return new Gson().toJson(result);
+    		
+    		if(map.containsKey("ERRO")){
+   				return gson.toJson(map.toString());
+    		}	
+    	}
+		
+    	return gson.toJson(map.toString());
     }  
     
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
@@ -101,4 +100,20 @@ public class ShortenRestController {
     	
         return new ResponseEntity<Shorten>(HttpStatus.NOT_FOUND);
     }
+    
+    @RequestMapping(value= "/shortUrl", method=RequestMethod.POST)
+    public String searchShortUrl(@RequestBody Shorten prShorten) {
+		Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().setPrettyPrinting().create();
+		
+		if(prShorten != null){
+    		shortenService.findByShortUrl(prShorten.getShortUrl());
+    		
+    		if(map.containsKey("ERRO")){
+   				return gson.toJson(map.toString());
+    		}	
+    	}
+		
+    	return gson.toJson(map.toString());
+    }
+    
 }

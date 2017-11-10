@@ -57,5 +57,20 @@ taskApp.controller('shortenController', ['$scope', '$http', '$location', functio
 		$scope.shorten = {};
 		$scope.getAll();   	
 	}  
+	
+	$scope.searchShortUrl = function(data){
+		
+		if(data == nll || data == undefined || data == ""){
+			alert( "Campo Short URL para consulta em contra-se embranco!" );
+			return false;
+		}
+		
+		$http.post(url+"/shortUrl", data).success(function(data, status) {		   
+			cleanForm();		
+		}).error(function(data, status, headers, config) {
+
+		});		      		   				
+
+	}
 
 }]);

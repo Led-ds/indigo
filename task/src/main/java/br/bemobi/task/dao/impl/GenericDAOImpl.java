@@ -26,12 +26,12 @@ public class GenericDAOImpl<PK, T> implements GenericDAO<PK, T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> findAlias(String alias) throws HibernateException {
+	public List<T> findAlias(String prAlias) throws HibernateException {
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			Transaction ts = session.beginTransaction();
 			String queryHQL = " FROM " + getTypeClass().getName() + " WHERE customeAlias like :customeAlias";
-			Query query = session.createQuery(queryHQL).setParameter("customeAlias", alias);
+			Query query = session.createQuery(queryHQL).setParameter("customeAlias", prAlias);
 
 			List<T> list = (List<T>) query.list();        
 			ts.commit();
@@ -45,11 +45,11 @@ public class GenericDAOImpl<PK, T> implements GenericDAO<PK, T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public T getById(PK id) throws HibernateException {
+	public T getById(PK prId) throws HibernateException {
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			Transaction ts = session.beginTransaction();
-			String queryHQL = " FROM " + getTypeClass().getName() + " WHERE ID =" + id;
+			String queryHQL = " FROM " + getTypeClass().getName() + " WHERE ID =" + prId;
 			Query query = session.createQuery(queryHQL);
 
 			T t = (T) query.uniqueResult();
@@ -66,12 +66,12 @@ public class GenericDAOImpl<PK, T> implements GenericDAO<PK, T> {
 		}
 	}
 
-	public Long save(T entity) throws HibernateException {
+	public Long save(T prEntity) throws HibernateException {
 		Long id = 0L;
 		try{
 			Session session = sessionFactory.getCurrentSession();
 			Transaction tx = session.beginTransaction();
-			id = (Long) session.save(entity);
+			id = (Long) session.save(prEntity);
 			tx.commit();
 
 		}catch(HibernateException he){
@@ -82,11 +82,11 @@ public class GenericDAOImpl<PK, T> implements GenericDAO<PK, T> {
 		return id;
 	}
 
-	public void update(T entity) throws HibernateException {
+	public void update(T prEntity) throws HibernateException {
 		try{
 			Session session = sessionFactory.getCurrentSession();
 			Transaction tx = session.beginTransaction();
-			session.update(entity);
+			session.update(prEntity);
 			tx.commit();
 
 		}catch(HibernateException he){
@@ -96,11 +96,11 @@ public class GenericDAOImpl<PK, T> implements GenericDAO<PK, T> {
 
 	}
 
-	public void delete(T entity) throws HibernateException {
+	public void delete(T prEntity) throws HibernateException {
 		try{
 			Session session = sessionFactory.getCurrentSession();
 			Transaction tx = session.beginTransaction();
-			session.delete(entity);
+			session.delete(prEntity);
 			tx.commit();
 		}catch(HibernateException he){
 			he.getStackTrace();
@@ -129,10 +129,32 @@ public class GenericDAOImpl<PK, T> implements GenericDAO<PK, T> {
 			throw he;    		
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public T getByShortUrl(String prShortUrl) throws HibernateException {
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Transaction ts = session.beginTransaction();
+			String queryHQL = " FROM " + getTypeClass().getName() + " WHERE shortUrl =" + prShortUrl;
+			Query query = session.createQuery(queryHQL);
+
+			T t = (T) query.uniqueResult();
+			ts.commit();
+
+			if(t != null){
+				return t;
+			}
+
+			return null;
+		} catch (HibernateException hex) {
+			hex.getStackTrace();
+			throw hex;
+		}
+	}
+
 
 	private Class<?> getTypeClass() {
 		Class<?> clazz = (Class<?>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 		return clazz;
 	}
-
 }
