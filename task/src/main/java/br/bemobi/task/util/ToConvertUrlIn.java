@@ -24,7 +24,7 @@ public class ToConvertUrlIn {
 		int numOfChar= elements.length;
 
 		if(prUrlOriginla != null){	
-			toBeConvertedId = Hashing.murmur3_32().hashString(prUrlOriginla, StandardCharsets.UTF_8).asInt();
+			toBeConvertedId = ((Hashing.murmur3_32().hashString(prUrlOriginla, StandardCharsets.UTF_8).asInt())*(-1));
 
 			if(toBeConvertedId < numOfChar + 1 && toBeConvertedId > 0){
 				convertedString = elements[(toBeConvertedId-1)];

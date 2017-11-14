@@ -58,7 +58,7 @@ public class ShortenServiceImpl implements ShortenService{
 					
 				}else{					
 					
-					String alias = ToConvertUrlIn.convertedToString(prShorten.getCustomeAlias());
+					String alias = ToConvertUrlIn.convertedToString(prShorten.getOriginalUrl());
 					prShorten.setCustomeAlias(alias);
 					prShorten.setShortUrl(DOMINIO+alias);
 					

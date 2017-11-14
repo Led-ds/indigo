@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.ws.rs.Produces;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ public class ShortenRestController {
 		this.shortenService = shortenService;
 	}
 	
+	@Produces({"application/json; charset=utf-8" })
 	@RequestMapping(method=RequestMethod.POST)
     public String create(@RequestBody Shorten prShorten) {
 		Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().setPrettyPrinting().create();

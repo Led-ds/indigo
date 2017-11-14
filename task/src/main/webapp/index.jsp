@@ -31,37 +31,13 @@
         	
             <div class="inner-bg">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2 text">
-                            
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3 form-box">
-                        	<div class="form-top">
-                        		<div class="form-top-left">
-                        		</div>
-                        		<div class="form-top-right">
-                        			<i class="fa fa-key"></i>
-                        		</div>
-                            </div>
-                            <div class="form-bottom">
-			                    <form role="form" action="" method="post" class="login-form">
-			                        <div class="form-group">
-<!-- 			                         onClick="windows.location("pagina");" -->
-				                    	<input type="submit" value="Shorted" class="btn btn-primary" align="bottom" ng-click="location.href='task/view/page/shorten.jsp'"/>
-			                        	<input type="submit" value="Retrieve" class="btn btn-primary" align="bottom" ng-click="location.href='retrive.jsp'" />
-			                        </div>
-			                    </form>
-		                    </div>
-                        </div>
-                    </div>
+                    <jsp:include page="task/view/page/shorten.jsp" />
                 </div>
             </div>
         </div>
 	
 	
-<%-- 		<jsp:include page="task/view/page/shorten.jsp" /> --%>
+
 <%-- 		<jsp:include page="task/view/page/retrieve.jsp" /> --%>
 	</div>
 
